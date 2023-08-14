@@ -1,0 +1,96 @@
+<div class="container mt-4">
+	<div class="header-btn">
+		<h2>Recaudo consolidado</h2>
+		<div>
+			
+			<button type="button" (click)="SyncData()" [disabled]="loadingSyncData" class="btn btn-primary btn-block btn-sync">{{ loadingSyncData ? 'Sincronizando': 'Sincronizar' }}
+				<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="loadingSyncData"></span>
+			</button>
+			<button class="btn btn-primary" (click)="downloadPdf()">Reporte</button>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card mb-4">
+				<div class="card-header">
+					Filtros
+				</div>
+				<div class="card-body">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="ID" [(ngModel)]="filters.id">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Estatión" [(ngModel)]="filters.station">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Sentido" [(ngModel)]="filters.way">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Hora" [(ngModel)]="filters.hour">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Categoria" [(ngModel)]="filters.category">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Cantidad" [(ngModel)]="filters.amount">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Valor Tabulado"
+							[(ngModel)]="filters.tabulatedValue">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Fecha" [(ngModel)]="filters.date">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-8">
+			<div class="card">
+				<div class="card-header">
+					Tabla de Datos
+				</div>
+				<div class="card-body">
+					<div class="table-responsive table-container" *ngIf="showData; else dataNoFound">
+						<table class="table table-bordered table-striped">
+							<thead class="sticky-top bg-white">
+								<tr>
+									<th>ID</th>
+									<th>Estatión</th>
+									<th>Sentido</th>
+									<th>Hora</th>
+									<th>Categoria</th>
+									<th>Cantidad</th>
+									<th>Valor Tabulado</th>
+									<th>Fecha</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of filteredData">
+									<td>{{ item.id }}</td>
+									<td>{{ item.station }}</td>
+									<td>{{ item.way }}</td>
+									<td>{{ item.hour }}</td>
+									<td>{{ item.category }}</td>
+									<td>{{ item.amount }}</td>
+									<td>{{ item.tabulatedValue | currency }}</td>
+									<td>{{ item.date }}</td>
+								</tr>
+							</tbody>
+						</table>	
+					</div>
+					<ng-template #dataNoFound>
+						<div class="alert alert-warning" role="alert">
+							No se encontró información para visualizar, si desea puede sincronizar!
+						 </div>
+					</ng-template>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="loading-overlay" *ngIf="loading">
+	<div class="loading-spinner"></div>
+</div>
